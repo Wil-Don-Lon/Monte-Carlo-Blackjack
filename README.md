@@ -27,7 +27,7 @@ This project implements a complete blackjack environment with a tabular Monte Ca
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/blackjack-monte-carlo.git
+git clone https://github.com/Wil-Don-Lon/blackjack-monte-carlo.git
 cd blackjack-monte-carlo
 ```
 
