@@ -4,7 +4,9 @@ An interactive blackjack game demonstrating Monte Carlo reinforcement learning w
 
 ## Overview
 
-This project implements a complete blackjack environment with a tabular Monte Carlo control agent that learns optimal play through self-play. The application features multiple modes, including manual play, AI-assisted play with hints, live AI demonstrations, and batch simulation with statistical analysis. The terminal-based Jupyter notebook was created by Medhansh Sankaran, which was then adapted into a PyGame interface by William Donnell-Lonon. 
+This project implements a complete blackjack environment with a tabular Monte Carlo control agent that learns optimal play through self-play. The application features multiple modes, including manual play, AI-assisted play with hints, live AI demonstrations, and batch simulation with statistical analysis.
+
+The project evolved from a command-line interface (CLI) implementation in Jupyter notebook by Medhansh Sankaran into a full-featured PyGame graphical interface by William Donnell-Lonon. The core Monte Carlo algorithm, blackjack environment, and agent logic remain faithful to the original implementation while adding rich visualizations and interactive features.
 
 ## Features
 
@@ -27,8 +29,8 @@ This project implements a complete blackjack environment with a tabular Monte Ca
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/Wil-Don-Lon/Monte-Carlo-Blackjack.git
-cd Monte-Carlo-Blackjack
+git clone https://github.com/Wil-Don-Lon/blackjack-monte-carlo.git
+cd blackjack-monte-carlo
 ```
 
 2. Install dependencies:
@@ -66,6 +68,34 @@ In "Watch AI Play" mode, you can run batch simulations to see statistical perfor
 
 The batch mode uses the greedy policy (no exploration) and runs games without animation for speed.
 
+## Project Evolution
+
+### Original CLI Implementation
+
+The original implementation by Medhansh Sankaran was a terminal-based interactive program featuring:
+
+- **Text-based menu system**: Five options including training, watching the agent, and manual play
+- **Episode generation**: Complete episode sampling under the epsilon-greedy policy
+- **State formatting**: Human-readable state representations showing player sum, dealer upcard, and usable ace status
+- **Action suggestions**: Real-time recommendations from the trained policy during manual play
+- **Agent performance tracking**: Win/loss/push statistics across multiple hands
+
+The CLI version demonstrated the core MC algorithm with a clean, minimalist interface focused on the learning mechanics.
+
+### PyGame Graphical Interface
+
+William Donnell-Lonon adapted the CLI implementation into a full graphical application while preserving the original algorithm:
+
+- **Visual card representations**: Animated playing cards with proper suit symbols and smooth positioning
+- **Real-time training visualization**: Progress bars, episode counters, and decorative card animations during training
+- **Interactive UI components**: Button system with hover effects and state management
+- **Live statistics display**: Persistent win/loss/push tracking across sessions
+- **Batch simulation charts**: Dynamic bar graphs showing outcome distributions with real-time updates
+- **Multi-platform font handling**: Robust Unicode font loading for card suit symbols across operating systems
+- **Smooth animations**: 60 FPS rendering with interpolated card movements
+
+The graphical version maintains identical game logic and Monte Carlo implementation while making the learning process visually engaging and accessible to non-technical users.
+
 ## Implementation Details
 
 ### Environment
@@ -94,6 +124,8 @@ Default training runs 1,000,000 episodes, which provides strong convergence for 
 - Adjust strategy based on dealer upcard
 - Handle soft totals (with usable Ace) differently than hard totals
 
+The training process is identical between CLI and GUI versions, with the GUI adding visual feedback through progress bars and animated card backs.
+
 ## Controls
 
 - **Mouse**: Click buttons to navigate menus and make decisions
@@ -102,16 +134,44 @@ Default training runs 1,000,000 episodes, which provides strong convergence for 
 ## Project Structure
 
 ```
-blackjack_mc.py          # Main game file containing all classes and game loop
+blackjack_mc.py          # Main PyGame application with GUI
+blackjack_cli.py         # Original CLI implementation (if included)
 README.md                # This file
 ```
 
 Key classes:
 - `BlackjackEnv`: Episodic environment with step/reset interface
 - `MCBlackjackAgent`: Tabular Monte Carlo control with epsilon-greedy policy
-- `BlackjackGame`: Pygame application handling UI, rendering, and game flow
+- `BlackjackGame`: PyGame application handling UI, rendering, and game flow
 - `Card`: Visual card representation with suit glyphs and smooth animation
 - `Button`: Interactive UI button component
+
+### Core Algorithm (shared between versions)
+
+Both implementations share the same Monte Carlo logic:
+
+```python
+def train(self, env_factory, episodes=100000):
+    for _ in range(episodes):
+        env = env_factory()
+        ep = self.generate_episode(env)
+        
+        visited = set()
+        G = 0.0
+        for t in reversed(range(len(ep))):
+            s, a, r = ep[t]
+            G = self.gamma * G + r
+            if a is None:
+                continue
+            sa = (s, a)
+            if sa not in visited:
+                visited.add(sa)
+                self.returns_sum[s][a] += G
+                self.returns_count[s][a] += 1
+                self.Q[s][a] = self.returns_sum[s][a] / self.returns_count[s][a]
+```
+
+This first-visit MC control algorithm with running averages forms the foundation of both the CLI and GUI versions.
 
 ## Technical Notes
 
@@ -145,11 +205,14 @@ Potential additions:
 - Multi-deck shoe with penetration
 - Betting and bankroll management
 - Additional blackjack variants (European, Spanish 21)
+- Heatmap visualizations of learned Q-values
+- Policy comparison tool between different training runs
 
 ## Credits
 
-Interface designed by William Donnell-Lonon
-Monte Carlo implementation architected by Medhansh Sankaran.
+Original CLI implementation and Monte Carlo algorithm: Medhansh Sankaran
+
+PyGame interface and visualization system: William Donnell-Lonon
 
 ## License
 
