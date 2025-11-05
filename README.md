@@ -4,7 +4,7 @@ An interactive blackjack game demonstrating Monte Carlo reinforcement learning w
 
 ## Overview
 
-This project implements a complete blackjack environment with a tabular Monte Carlo control agent that learns optimal play through self-play. The application features multiple modes including manual play, AI-assisted play with hints, live AI demonstrations, and batch simulation with statistical analysis.
+This project implements a complete blackjack environment with a tabular Monte Carlo control agent that learns optimal play through self-play. The application features multiple modes, including manual play, AI-assisted play with hints, live AI demonstrations, and batch simulation with statistical analysis. The terminal-based Jupyter notebook was created by Medhansh Sankaran, which was then adapted into a PyGame interface by William Donnell-Lonon. 
 
 ## Features
 
