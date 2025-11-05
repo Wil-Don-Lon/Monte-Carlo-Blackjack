@@ -148,7 +148,8 @@ Potential additions:
 
 ## Credits
 
-Created by William Donnell-Lonon and Medhansh Sankaran.
+Interface designed by William Donnell-Lonon
+Monte Carlo implementation architected by Medhansh Sankaran.
 
 ## License
 
