@@ -135,7 +135,7 @@ The training process is identical between CLI and GUI versions, with the GUI add
 
 ```
 blackjack_mc.py          # Main PyGame application with GUI
-blackjack_cli.py         # Original CLI implementation (if included)
+blackjack_cli.py         # CLI implementation
 README.md                # This file
 ```
 
